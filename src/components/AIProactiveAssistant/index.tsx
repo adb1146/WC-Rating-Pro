@@ -6,9 +6,10 @@ import { getIndustrySpecificGuidance, getContextualHelp, getSmartSuggestions } f
 interface AIProactiveAssistantProps {
   businessInfo: BusinessInfo;
   currentSection: string;
+  children?: React.ReactNode;
 }
 
-export function AIProactiveAssistant({ businessInfo, currentSection }: AIProactiveAssistantProps) {
+export function AIProactiveAssistant({ businessInfo, currentSection, children }: AIProactiveAssistantProps) {
   const [suggestions, setSuggestions] = React.useState<string[]>([]);
   const [contextualHelp, setContextualHelp] = React.useState<string>('');
   const [smartTips, setSmartTips] = React.useState<string[]>([]);
@@ -266,6 +267,7 @@ export function AIProactiveAssistant({ businessInfo, currentSection }: AIProacti
           </div>
         </div>
       </div>
+      {children}
     </div>
   );
 }

@@ -1,16 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, AuthError } from '@supabase/supabase-js';
-import { checkSupabaseConnection, supabase } from '../utils/supabase';
+import { User } from '@supabase/supabase-js';
+import { supabase, checkSupabaseConnection } from '../utils/supabase';
+import { handleStorageError } from '../utils/storage/errorHandling';
 
 interface SupabaseContextType {
   user: User | null;
   loading: boolean;
-  isConnected: boolean;
   error: string | null;
-  signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
-  signUp: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+  isConnected: boolean;
   signOut: () => Promise<void>;
-  resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
 }
 
 const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined);
@@ -18,8 +16,8 @@ const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined
 export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     async function initializeSupabase() {
@@ -40,9 +38,9 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
         setError(null);
         setLoading(false);
       } catch (error) {
-        console.error('Error initializing Supabase:', error);
-        setIsConnected(false);
-        setError('Failed to initialize Supabase');
+        const storageError = handleStorageError(error);
+        console.error('Error initializing Supabase:', storageError);
+        setError(storageError.message);
         setLoading(false);
       }
     }
@@ -51,70 +49,18 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
-      setIsConnected(!!session?.user);
-      
-      if (event === 'SIGNED_IN') {
-        setError(null);
-      } else if (event === 'SIGNED_OUT') {
-        setError('Please sign in');
-      }
+      setError(null);
     });
 
     return () => subscription.unsubscribe();
   }, []);
-
-  const signIn = async (email: string, password: string) => {
-    try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      return { error };
-    } catch (error) {
-      console.error('Sign in error:', error);
-      return { error: error as AuthError };
-    }
-  };
-
-  const signUp = async (email: string, password: string) => {
-    try {
-      const { error } = await supabase.auth.signUp({ email, password });
-      return { error };
-    } catch (error) {
-      console.error('Sign up error:', error);
-      return { error: error as AuthError };
-    }
-  };
-
-  const resetPassword = async (email: string) => {
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email);
-      return { error };
-    } catch (error) {
-      console.error('Password reset error:', error);
-      return { error: error as AuthError };
-    }
-  };
-
-  const signOut = async () => {
-    try {
-      await supabase.auth.signOut();
-      // Clear any stored auth data
-      localStorage.removeItem('sb-osbpcojswvrpncsywbzw-auth-token');
-      // Force a page reload to clear React state
-      window.location.reload();
-    } catch (error) {
-      console.error('Error signing out:', error);
-      throw error;
-    }
-  };
 
   const value = {
     user,
     loading,
     isConnected,
     error,
-    signIn,
-    signUp,
-    signOut,
-    resetPassword,
+    signOut: () => supabase.auth.signOut(),
   };
 
   return (

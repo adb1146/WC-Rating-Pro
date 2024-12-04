@@ -1,5 +1,6 @@
 import { Quote, SavedRating } from '../types';
 import { supabase } from './supabase';
+import { handleStorageError } from './storage/errorHandling';
 
 interface DBQuote {
   id: string;
@@ -78,95 +79,130 @@ function fromDBRating(dbRating: DBRating): SavedRating {
 }
 
 export async function saveQuote(quote: Quote): Promise<void> {
-  const { error } = await supabase
-    .from('quotes')
-    .insert([{
-      ...toDBQuote(quote),
-      created_at: new Date().toISOString()
-    }]);
+  try {
+    const { error } = await supabase
+      .from('quotes')
+      .insert([{
+        ...toDBQuote(quote),
+        created_at: new Date().toISOString()
+      }]);
 
-  if (error) {
-    console.error('Error saving quote:', error);
-    throw error;
+    if (error) {
+      console.error('Error saving quote:', error);
+      throw error;
+    }
+  } catch (error) {
+    const storageError = handleStorageError(error);
+    console.error('Quote save error:', storageError);
+    throw storageError;
   }
 }
 
 export async function getQuotes(): Promise<Quote[]> {
-  const { data, error } = await supabase
-    .from('quotes')
-    .select('*')
-    .order('created_at', { ascending: false });
+  try {
+    const { data, error } = await supabase
+      .from('quotes')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-  if (error) {
-    console.error('Error fetching quotes:', error);
-    throw error;
+    if (error) {
+      console.error('Error fetching quotes:', error);
+      throw error;
+    }
+
+    return (data || []).map(fromDBQuote);
+  } catch (error) {
+    const storageError = handleStorageError(error);
+    console.error('Quotes fetch error:', storageError);
+    throw storageError;
   }
-
-  return (data || []).map(fromDBQuote);
 }
 
 export async function saveRating(rating: SavedRating): Promise<void> {
-  const { error } = await supabase
-    .from('ratings')
-    .insert([{
-      ...toDBRating(rating),
-      saved_at: new Date().toISOString()
-    }]);
+  try {
+    const { error } = await supabase
+      .from('ratings')
+      .insert([{
+        ...toDBRating(rating),
+        saved_at: new Date().toISOString()
+      }]);
 
-  if (error) {
-    console.error('Error saving rating:', error);
-    throw error;
+    if (error) throw error;
+  } catch (error) {
+    const storageError = handleStorageError(error);
+    console.error('Rating save error:', storageError);
+    throw storageError;
   }
 }
 
 export async function getRatings(): Promise<SavedRating[]> {
-  const { data, error } = await supabase
-    .from('ratings')
-    .select('*')
-    .order('saved_at', { ascending: false });
+  try {
+    const { data, error } = await supabase
+      .from('ratings')
+      .select('*')
+      .order('saved_at', { ascending: false });
 
-  if (error) {
-    console.error('Error fetching ratings:', error);
-    throw error;
+    if (error) {
+      console.error('Error fetching ratings:', error);
+      throw error;
+    }
+
+    return (data || []).map(fromDBRating);
+  } catch (error) {
+    const storageError = handleStorageError(error);
+    console.error('Ratings fetch error:', storageError);
+    throw storageError;
   }
-
-  return (data || []).map(fromDBRating);
 }
 
 export async function getQuoteCountForRating(ratingId: string): Promise<number> {
-  const { count, error } = await supabase
-    .from('quotes')
-    .select('*', { count: 'exact', head: true })
-    .eq('rating_id', ratingId);
+  try {
+    const { count, error } = await supabase
+      .from('quotes')
+      .select('*', { count: 'exact', head: true })
+      .eq('rating_id', ratingId);
 
-  if (error) {
-    console.error('Error getting quote count:', error);
-    return 0;
+    if (error) throw error;
+    return count || 0;
+  } catch (error) {
+    const storageError = handleStorageError(error);
+    console.error('Quote count error:', storageError);
+    throw storageError;
   }
-
-  return count || 0;
 }
 
 export async function updateApplicationStatus(applicationId: string, status: string): Promise<void> {
-  const { error } = await supabase
-    .from('ratings')
-    .update({ status })
-    .eq('id', applicationId);
+  try {
+    const { error } = await supabase
+      .from('ratings')
+      .update({ status })
+      .eq('id', applicationId);
 
-  if (error) {
-    console.error('Error updating rating status:', error);
-    throw error;
+    if (error) {
+      console.error('Error updating rating status:', error);
+      throw error;
+    }
+  } catch (error) {
+    const storageError = handleStorageError(error);
+    console.error('Application status update error:', storageError);
+    throw storageError;
   }
 }
 
 export async function updateQuoteStatus(quoteId: string, status: Quote['status']): Promise<void> {
-  const { error } = await supabase
-    .from('quotes')
-    .update({ status })
-    .eq('id', quoteId);
+  try {
+    const { error } = await supabase
+      .from('quotes')
+      .update({ status })
+      .eq('id', quoteId);
 
-  if (error) {
-    console.error('Error updating quote status:', error);
-    throw error;
+    if (error) {
+      console.error('Error updating quote status:', error);
+      throw error;
+    }
+  } catch (error) {
+    const storageError = handleStorageError(error);
+    console.error('Quote status update error:', storageError);
+    throw storageError;
   }
 }

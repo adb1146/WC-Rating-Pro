@@ -15,7 +15,7 @@ import { BusinessInfo, SavedRating } from './types';
 import { FormProgress } from './components/FormProgress';
 import { exampleBusinessInfo } from './utils/exampleData';
 import { HomeTab } from './components/HomeTab';
-import { AIProactiveAssistant } from './components/AIProactiveAssistant';
+import { UnifiedAIAssistant } from './components/UnifiedAIAssistant';
 import { AITutorial } from './components/AITutorial';
 import { TutorialProvider } from './components/TutorialContext';
 import { saveRating, getRatings } from './utils/storage';
@@ -244,7 +244,7 @@ function App() {
         </div>
         )}
         {activeTab === 'new' && showAIAssistant && (
-          <AIProactiveAssistant 
+          <UnifiedAIAssistant
             businessInfo={businessInfo}
             currentSection={currentSection}
           />

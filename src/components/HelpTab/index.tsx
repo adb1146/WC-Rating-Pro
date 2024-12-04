@@ -1,5 +1,5 @@
 import React from 'react';
-import { HelpCircle, FileText, Quote, Brain, Shield, Lightbulb, Users, DollarSign, MapPin, AlertTriangle, Calendar } from 'lucide-react';
+import { HelpCircle, FileText, Quote, Brain, Shield, Lightbulb, Users, DollarSign, MapPin, AlertTriangle, Calendar, Target, Zap, LineChart, CheckCircle, Calculator, Save } from 'lucide-react';
 
 export function HelpTab() {
   return (
@@ -12,7 +12,7 @@ export function HelpTab() {
         
         <div className="prose prose-blue max-w-none">
           <p className="text-gray-600">
-            WC Rating Pro combines traditional underwriting expertise with AI-powered insights to streamline your workers' compensation insurance application process. Get accurate quotes faster with intelligent assistance every step of the way.
+            WC Rating Pro combines traditional underwriting expertise with advanced AI-powered insights to streamline your workers' compensation insurance application process. Our intelligent system provides real-time guidance, risk analysis, and premium optimization suggestions throughout your journey.
           </p>
         </div>
       </div>
@@ -27,21 +27,45 @@ export function HelpTab() {
           <div className="space-y-4">
             <div>
               <h4 className="font-medium text-gray-900 mb-2">Smart Assistance</h4>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
-                <li>Real-time suggestions as you type</li>
-                <li>Automated class code recommendations</li>
-                <li>Risk assessment and optimization</li>
-                <li>Premium saving opportunities</li>
+              <ul className="list-disc list-inside text-gray-600 space-y-3">
+                <li className="flex items-start gap-2">
+                  <Zap className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Real-time intelligent suggestions powered by GPT-4</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Target className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Automated class code recommendations with confidence scoring</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <LineChart className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Comprehensive risk assessment and benchmarking</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <DollarSign className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Data-driven premium optimization strategies</span>
+                </li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-medium text-gray-900 mb-2">Proactive Insights</h4>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
-                <li>Industry-specific guidance</li>
-                <li>Safety program recommendations</li>
-                <li>Loss control suggestions</li>
-                <li>Compliance assistance</li>
+              <ul className="list-disc list-inside text-gray-600 space-y-3">
+                <li className="flex items-start gap-2">
+                  <Brain className="w-4 h-4 mt-1 text-green-500 flex-shrink-0" />
+                  <span>AI-powered industry-specific risk analysis and guidance</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Shield className="w-4 h-4 mt-1 text-green-500 flex-shrink-0" />
+                  <span>Customized safety program recommendations with ROI estimates</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 mt-1 text-green-500 flex-shrink-0" />
+                  <span>Predictive loss control analysis and mitigation strategies</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <FileText className="w-4 h-4 mt-1 text-green-500 flex-shrink-0" />
+                  <span>Real-time compliance monitoring and assistance</span>
+                </li>
               </ul>
             </div>
           </div>
@@ -134,21 +158,45 @@ export function HelpTab() {
           <div className="space-y-4">
             <div>
               <h4 className="font-medium text-gray-900 mb-2">Smart Tools</h4>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
-                <li>Real-time address verification</li>
-                <li>Automated class code lookup</li>
-                <li>Territory rating optimization</li>
-                <li>Experience mod calculation</li>
+              <ul className="list-disc list-inside text-gray-600 space-y-3">
+                <li className="flex items-start gap-2">
+                  <MapPin className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Intelligent location validation and territory optimization</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Brain className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>AI-assisted class code selection with confidence scoring</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Calculator className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Advanced premium modeling and optimization</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <LineChart className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Industry benchmarking and trend analysis</span>
+                </li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-medium text-gray-900 mb-2">Time-Saving Features</h4>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
-                <li>Save and resume applications</li>
-                <li>Quick form validation</li>
-                <li>Automated suggestions</li>
-                <li>Progress tracking</li>
+              <ul className="list-disc list-inside text-gray-600 space-y-3">
+                <li className="flex items-start gap-2">
+                  <Save className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Intelligent auto-save and application versioning</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Real-time validation with smart error detection</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Zap className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Context-aware suggestions and auto-completion</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Target className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Visual progress tracking with completion estimates</span>
+                </li>
               </ul>
             </div>
           </div>
@@ -160,9 +208,27 @@ export function HelpTab() {
           <Brain className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
           <div>
             <h3 className="text-lg font-semibold text-blue-900 mb-2">Need More Help?</h3>
-            <p className="text-blue-700">
-              Our AI assistant is available throughout the application process. Look for the AI icon to get contextual help, suggestions, and optimization tips for each section.
-            </p>
+            <div className="text-blue-700">
+              <p className="mb-3">Our advanced AI assistant is available 24/7 throughout your application process. Look for the AI icon to access:</p>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <Brain className="w-4 h-4 mt-1 text-blue-600" />
+                  <span>Contextual help and smart suggestions</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <LineChart className="w-4 h-4 mt-1 text-blue-600" />
+                  <span>Real-time risk analysis and benchmarking</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Shield className="w-4 h-4 mt-1 text-blue-600" />
+                  <span>Safety program recommendations</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <DollarSign className="w-4 h-4 mt-1 text-blue-600" />
+                  <span>Premium optimization strategies</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,16 +1,30 @@
 import { createClient } from '@supabase/supabase-js';
+import { handleStorageError } from './storage/errorHandling';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+let supabaseInstance: ReturnType<typeof createClient> | null = null;
 
 if (!supabaseUrl || !supabaseKey) {
   console.warn('Missing Supabase environment variables');
 }
 
-export const supabase = createClient(supabaseUrl || '', supabaseKey || '');
+export function getSupabaseClient() {
+  if (!supabaseInstance && supabaseUrl && supabaseKey) {
+    supabaseInstance = createClient(supabaseUrl, supabaseKey);
+  }
+  return supabaseInstance;
+}
+
+export const supabase = getSupabaseClient();
 
 export async function checkSupabaseConnection(): Promise<boolean> {
   try {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+
     const { data, error } = await supabase
       .from('health_check')
       .select('status')
@@ -18,13 +32,15 @@ export async function checkSupabaseConnection(): Promise<boolean> {
       .single();
 
     if (error) {
-      console.warn('Database check failed:', error);
+      const storageError = handleStorageError(error);
+      console.warn('Database check failed:', storageError);
       return false;
     }
 
-    return data?.status === 'ok';
+    return data?.status === 'ok' || false;
   } catch (error) {
-    console.warn('Database error:', error);
+    const storageError = handleStorageError(error);
+    console.warn('Database error:', storageError);
     return false;
   }
 }
