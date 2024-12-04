@@ -2,6 +2,7 @@ import { RiskAnalysis } from './riskAnalysis';
 import { ClassCodeSuggestion } from './classCodeAssistant';
 import { SafetyAnalysis } from './safetyAnalysis';
 import { PremiumOptimization } from './premiumOptimization';
+import { Address } from '../../types';
 
 export interface AIError {
   code: string;
@@ -102,4 +103,20 @@ export function getFallbackPremiumOptimization(): PremiumOptimization {
     prioritizedActions: [],
     timestamp: new Date().toISOString()
   };
+}
+
+export function getFallbackLocationSuggestions() {
+  return [{
+    address: {
+      street1: '',
+      street2: '',
+      city: '',
+      state: '',
+      zipCode: ''
+    },
+    confidence: 0,
+    businessPresence: false,
+    nearbyBusinesses: [],
+    riskFactors: ['Unable to analyze location']
+  }];
 }

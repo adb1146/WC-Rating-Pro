@@ -1,15 +1,18 @@
 import React from 'react';
-import { MapPin, Plus, Trash2, Brain, Loader2, CheckCircle, Search } from 'lucide-react';
+import { MapPin, Plus, Trash2, Brain, Loader2, CheckCircle, Search, Building2 } from 'lucide-react';
 import { Address } from '../../types';
 import { states } from '../../utils/constants';
 import { ValidationMessage } from '../ValidationMessage';
 import { suggestLocation, validateAddress } from '../../utils/ai/locationAssistant';
 import { getAddressSuggestions, formatAddress } from '../../utils/ai/locationTypeahead';
+import { LocationResearchDialog } from '../LocationResearchDialog';
 import { useDebounce } from '../../utils/hooks';
+import { BusinessInfo } from '../../types';
 
 interface LocationFormProps {
   locations: Address[];
   onChange: (locations: Address[]) => void;
+  businessInfo: BusinessInfo;
 }
 
 const emptyLocation: Address = {
@@ -20,7 +23,7 @@ const emptyLocation: Address = {
   zipCode: '',
 };
 
-export function LocationForm({ locations, onChange }: LocationFormProps) {
+export function LocationForm({ locations, onChange, businessInfo }: LocationFormProps) {
   const [suggestions, setSuggestions] = React.useState<Address[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [typeaheadSuggestions, setTypeaheadSuggestions] = React.useState<Address[]>([]);
@@ -28,6 +31,7 @@ export function LocationForm({ locations, onChange }: LocationFormProps) {
   const [showTypeahead, setShowTypeahead] = React.useState<{[key: number]: boolean}>({});
   const [validationErrors, setValidationErrors] = React.useState<string[]>([]);
   const typeaheadRef = React.useRef<HTMLDivElement>(null);
+  const [showResearch, setShowResearch] = React.useState(false);
 
   const handleAddLocation = () => {
     onChange([...locations, { ...emptyLocation }]);
@@ -160,19 +164,32 @@ export function LocationForm({ locations, onChange }: LocationFormProps) {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <MapPin className="w-5 h-5 text-blue-600" />
-          <h2 className="text-xl font-semibold text-gray-900">Business Locations</h2>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">Business Locations</h2>
+            <p className="text-sm text-gray-500">Add locations or use AI to research optimal areas</p>
+          </div>
         </div>
         {locations.length === 0 && (
           <ValidationMessage message="At least one business location is required" />
         )}
-        <button
-          type="button"
-          onClick={handleAddLocation}
-          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors"
-        >
-          <Plus className="w-4 h-4" />
-          Add Location
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowResearch(true)}
+            className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded-md transition-colors"
+          >
+            <Building2 className="w-4 h-4" />
+            Research Locations
+          </button>
+          <button
+            type="button"
+            onClick={handleAddLocation}
+            className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Add Location
+          </button>
+        </div>
       </div>
 
       <div className="space-y-6">
@@ -393,6 +410,17 @@ export function LocationForm({ locations, onChange }: LocationFormProps) {
           </div>
         )}
       </div>
+      
+      <LocationResearchDialog
+        isOpen={showResearch}
+        onClose={() => setShowResearch(false)}
+        onSelectLocation={(location) => {
+          onChange([...locations, location]);
+          setShowResearch(false);
+        }}
+        businessDescription={businessInfo?.description || ''}
+        state={locations[0]?.state || ''}
+      />
     </div>
   );
 }

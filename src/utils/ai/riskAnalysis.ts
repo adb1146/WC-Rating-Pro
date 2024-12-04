@@ -45,7 +45,7 @@ Format response as JSON with the following structure:
   "factors": [
     {
       "category": "string",
-      "severity": "low|medium|high",
+      "severity": "low|medium|high", 
       "description": "string",
       "recommendations": ["string"]
     }

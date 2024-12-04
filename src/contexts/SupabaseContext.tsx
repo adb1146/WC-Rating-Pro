@@ -22,12 +22,16 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     async function initializeSupabase() {
       try {
+        setLoading(true);
+        setError(null);
+
         // Check connection first
         const connected = await checkSupabaseConnection();
         setIsConnected(connected);
 
         if (!connected) {
-          setError('Database connection failed');
+          const error = handleStorageError(new Error('Database connection failed'));
+          setError(error.message);
           setLoading(false);
           return;
         }

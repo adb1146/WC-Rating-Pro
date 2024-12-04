@@ -1,10 +1,12 @@
 import { OpenAI } from 'openai';
 import { getOpenAIClient } from './config';
 import { Address } from '../../types';
+import { supabase } from '../supabase';
 
 interface LocationSuggestion {
   address: Address;
   confidence: number;
+  territoryRating?: number;
   source?: string;
 }
 
@@ -12,6 +14,16 @@ export async function suggestLocation(
   partialAddress: Partial<Address>
 ): Promise<LocationSuggestion[]> {
   try {
+    // Get territory data if state is provided
+    let territoryData;
+    if (partialAddress.state) {
+      const { data } = await supabase
+        .from('territories')
+        .select('*')
+        .eq('state_code', partialAddress.state);
+      territoryData = data;
+    }
+
     const openai = getOpenAIClient();
     if (!openai) {
       return [];
@@ -22,6 +34,7 @@ export async function suggestLocation(
       City: ${partialAddress.city || ''}
       State: ${partialAddress.state || ''}
       ZIP: ${partialAddress.zipCode || ''}
+      Territory Data: ${JSON.stringify(territoryData)}
 
     Requirements:
     - Return ONLY valid US addresses
@@ -29,6 +42,7 @@ export async function suggestLocation(
     - Format as JSON array of Address objects
     - Verify address components exist
     - Maximum 3 suggestions
+    - Consider territory ratings if available
     - No explanatory text`;
 
     const completion = await openai.chat.completions.create({

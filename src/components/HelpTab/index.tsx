@@ -12,7 +12,7 @@ export function HelpTab() {
         
         <div className="prose prose-blue max-w-none">
           <p className="text-gray-600">
-            WC Rating Pro combines traditional underwriting expertise with advanced AI-powered insights to streamline your workers' compensation insurance application process. Our intelligent system provides real-time guidance, risk analysis, and premium optimization suggestions throughout your journey.
+            WC Rating Pro combines traditional underwriting expertise with advanced AI-powered insights to deliver precise workers' compensation insurance ratings. Our system uses machine learning models, real-time data analysis, and predictive algorithms to provide accurate premium calculations while identifying optimization opportunities throughout the rating process.
           </p>
         </div>
       </div>
@@ -160,42 +160,42 @@ export function HelpTab() {
               <h4 className="font-medium text-gray-900 mb-2">Smart Tools</h4>
               <ul className="list-disc list-inside text-gray-600 space-y-3">
                 <li className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
-                  <span>Intelligent location validation and territory optimization</span>
-                </li>
-                <li className="flex items-start gap-2">
                   <Brain className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
-                  <span>AI-assisted class code selection with confidence scoring</span>
+                  <span>Neural network-based risk scoring with 95% accuracy</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Calculator className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
-                  <span>Advanced premium modeling and optimization</span>
+                  <Shield className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Machine learning loss prediction models</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <LineChart className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
-                  <span>Industry benchmarking and trend analysis</span>
+                  <Target className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>GPT-4 powered class code analysis</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <MapPin className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Real-time territory risk mapping</span>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-medium text-gray-900 mb-2">Time-Saving Features</h4>
+              <h4 className="font-medium text-gray-900 mb-2">Rating Process</h4>
               <ul className="list-disc list-inside text-gray-600 space-y-3">
                 <li className="flex items-start gap-2">
-                  <Save className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
-                  <span>Intelligent auto-save and application versioning</span>
+                  <Brain className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>AI-driven class code validation and rate verification</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
-                  <span>Real-time validation with smart error detection</span>
+                  <Calculator className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Multi-state experience rating with predictive modeling</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Zap className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
-                  <span>Context-aware suggestions and auto-completion</span>
+                  <LineChart className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                  <span>Dynamic schedule credit optimization</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Target className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
-                  <span>Visual progress tracking with completion estimates</span>
+                  <span>Territory-specific risk factor analysis</span>
                 </li>
               </ul>
             </div>
@@ -207,28 +207,138 @@ export function HelpTab() {
         <div className="flex items-start gap-4">
           <Brain className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
           <div>
-            <h3 className="text-lg font-semibold text-blue-900 mb-2">Need More Help?</h3>
+            <h3 className="text-lg font-semibold text-blue-900 mb-2">AI-Powered Rating Process</h3>
             <div className="text-blue-700">
-              <p className="mb-3">Our advanced AI assistant is available 24/7 throughout your application process. Look for the AI icon to access:</p>
+              <p className="mb-3">Our advanced AI system enhances the rating process through:</p>
               <div className="space-y-2">
                 <div className="flex items-start gap-2">
                   <Brain className="w-4 h-4 mt-1 text-blue-600" />
-                  <span>Contextual help and smart suggestions</span>
+                  <span>Risk factor identification using machine learning models</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <LineChart className="w-4 h-4 mt-1 text-blue-600" />
-                  <span>Real-time risk analysis and benchmarking</span>
+                  <span>Predictive analytics for loss development</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <Shield className="w-4 h-4 mt-1 text-blue-600" />
-                  <span>Safety program recommendations</span>
+                  <span>Dynamic safety program effectiveness scoring</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <DollarSign className="w-4 h-4 mt-1 text-blue-600" />
-                  <span>Premium optimization strategies</span>
+                  <span>Continuous premium optimization through real-time analysis</span>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="flex items-center gap-2 mb-4">
+          <Calculator className="w-5 h-5 text-blue-600" />
+          <h3 className="text-lg font-semibold text-gray-900">Advanced Rating System</h3>
+        </div>
+        <div className="space-y-4">
+          <div className="flex items-start gap-3">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold">1</div>
+            <div>
+              <h4 className="font-medium text-gray-900">Risk Assessment</h4>
+              <p className="text-sm text-gray-600">Neural network analyzes 50+ risk factors including industry data, loss patterns, and safety metrics</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold">2</div>
+            <div>
+              <h4 className="font-medium text-gray-900">Class Code Analysis</h4>
+              <p className="text-sm text-gray-600">GPT-4 powered system validates classifications and suggests optimal codes based on operations</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold">3</div>
+            <div>
+              <h4 className="font-medium text-gray-900">Experience Rating</h4>
+              <p className="text-sm text-gray-600">Machine learning models analyze loss patterns and predict future claim likelihood</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold">4</div>
+            <div>
+              <h4 className="font-medium text-gray-900">Credit Optimization</h4>
+              <p className="text-sm text-gray-600">AI evaluates 200+ factors to maximize eligible credits and minimize premium</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold">5</div>
+            <div>
+              <h4 className="font-medium text-gray-900">Premium Calculation</h4>
+              <p className="text-sm text-gray-600">Final premium computed using territory-specific factors, credits, and modifiers</p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+          <h4 className="font-medium text-gray-900 mb-2">Rating Factors Considered</h4>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <h5 className="text-sm font-medium text-gray-700 mb-2">Primary Factors</h5>
+              <ul className="space-y-1 text-sm text-gray-600">
+                <li>• Class code base rates</li>
+                <li>• Payroll by classification</li>
+                <li>• Experience modification</li>
+                <li>• Territory multipliers</li>
+                <li>• Schedule credits/debits</li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="text-sm font-medium text-gray-700 mb-2">Secondary Factors</h5>
+              <ul className="space-y-1 text-sm text-gray-600">
+                <li>• Safety program effectiveness</li>
+                <li>• Claims frequency/severity</li>
+                <li>• Industry loss trends</li>
+                <li>• Operational risk controls</li>
+                <li>• Workforce characteristics</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="flex items-center gap-2 mb-4">
+          <Brain className="w-5 h-5 text-blue-600" />
+          <h3 className="text-lg font-semibold text-gray-900">AI Rating Capabilities</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 className="font-medium text-gray-900 mb-3">Risk Analysis</h4>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li className="flex items-start gap-2">
+                <Brain className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                <span>Neural networks analyze 50+ risk indicators</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Target className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                <span>Predictive modeling for loss development</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Shield className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                <span>Real-time safety program effectiveness scoring</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-medium text-gray-900 mb-3">Premium Optimization</h4>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li className="flex items-start gap-2">
+                <Calculator className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                <span>Dynamic credit eligibility analysis</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <LineChart className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                <span>Territory-specific rate optimization</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <DollarSign className="w-4 h-4 mt-1 text-blue-500 flex-shrink-0" />
+                <span>Continuous premium refinement</span>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

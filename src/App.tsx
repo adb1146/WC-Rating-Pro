@@ -205,6 +205,7 @@ function App() {
           />
           <LocationForm
             locations={businessInfo.locations}
+            businessInfo={businessInfo}
             onChange={(locations) => setBusinessInfo({ ...businessInfo, locations })}
           />
           <SafetyProgramForm

@@ -4,27 +4,20 @@ import { handleStorageError } from './storage/errorHandling';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-let supabaseInstance: ReturnType<typeof createClient> | null = null;
-
 if (!supabaseUrl || !supabaseKey) {
   console.warn('Missing Supabase environment variables');
 }
 
-export function getSupabaseClient() {
-  if (!supabaseInstance && supabaseUrl && supabaseKey) {
-    supabaseInstance = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(supabaseUrl || '', supabaseKey || '', {
+  auth: {
+    persistSession: false // Disable session persistence for better error handling
   }
-  return supabaseInstance;
-}
+});
 
-export const supabase = getSupabaseClient();
+export { supabase };
 
 export async function checkSupabaseConnection(): Promise<boolean> {
   try {
-    if (!supabase) {
-      throw new Error('Supabase client not initialized');
-    }
-
     const { data, error } = await supabase
       .from('health_check')
       .select('status')
@@ -37,10 +30,31 @@ export async function checkSupabaseConnection(): Promise<boolean> {
       return false;
     }
 
-    return data?.status === 'ok' || false;
+    return data?.status === 'ok';
   } catch (error) {
     const storageError = handleStorageError(error);
     console.warn('Database error:', storageError);
     return false;
+  }
+}
+
+export async function updateHealthCheck(
+  status: 'ok' | 'error' | 'maintenance',
+  details?: Record<string, any>
+): Promise<void> {
+  try {
+    const { error } = await supabase
+      .from('health_check')
+      .update({ 
+        status,
+        details: details || {},
+        last_checked: new Date().toISOString()
+      })
+      .eq('id', 1);
+
+    if (error) throw error;
+  } catch (error) {
+    console.error('Error updating health check:', error);
+    throw error;
   }
 }

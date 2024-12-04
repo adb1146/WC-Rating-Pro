@@ -1,11 +1,14 @@
 import { OpenAI } from 'openai';
 import { getOpenAIClient } from './config';
-import { verifyBusinessName } from '../businessNameVerification';
+import { handleAIError } from './errorHandling';
+import { supabase } from '../supabase';
 
 interface BusinessNameSuggestion {
   name: string;
   confidence: number;
-  reason?: string;
+  industry?: string;
+  source: string;
+  reasoning?: string;
 }
 
 export async function suggestBusinessName(
@@ -13,12 +16,10 @@ export async function suggestBusinessName(
   entityType: string
 ): Promise<BusinessNameSuggestion[]> {
   try {
-    // Don't process empty or very short inputs
     if (!partialName || partialName.length < 2) {
       return [];
     }
 
-    // Normalize input name
     const normalizedInput = partialName.toLowerCase().trim();
     
     // Special case for PS Advisory
@@ -26,72 +27,98 @@ export async function suggestBusinessName(
       return [{
         name: 'PS Advisory LLC',
         confidence: 1.0,
-        reason: 'Exact company match'
+        industry: 'Professional Services',
+        source: 'verified',
+        reasoning: 'Exact company match'
       }];
     }
 
-    // First check verified business names
-    const verifiedMatches = await verifyBusinessName(partialName);
-    if (verifiedMatches.length > 0) {
-      // Filter and sort matches by confidence
-      const highConfidenceMatches = verifiedMatches
-        .filter(match => match.confidence >= 0.9)
-        .sort((a, b) => b.confidence - a.confidence);
+    // First check database for verified names
+    try {
+      const { data: matches } = await supabase
+        .from('verified_business_names')
+        .select('*')
+        .ilike('name', `%${partialName}%`)
+        .limit(3);
 
-      if (highConfidenceMatches.length > 0) {
-        return highConfidenceMatches.map(match => ({
+      if (matches?.length) {
+        return matches.map(match => ({
           name: match.name,
-          confidence: match.confidence,
-          reason: 'Verified company name'
+          confidence: 1.0,
+          industry: match.industry,
+          source: 'Database',
+          reasoning: 'Verified business name'
         }));
       }
+    } catch (error) {
+      console.warn('Database search failed:', error);
     }
 
+    // Use OpenAI for suggestions
     const openai = getOpenAIClient();
     if (!openai) {
       return [];
     }
 
-    const prompt = `Given the partial business name "${partialName}" and entity type "${entityType}", suggest ONLY the complete legal business name.
+    const prompt = `Generate business name suggestions based on:
+Input: "${partialName}"
+Entity Type: ${entityType}
 
 Requirements:
-- Return ONLY the exact legal business name
-- Must be a real, verifiable business name
-- No descriptions or explanations
-- No additional context or information
-- One name per line
-- Maximum 1 suggestion
-- Must include appropriate legal suffix
-- Must follow standard business naming conventions
-- Do not modify verified business names
-- Do not include any descriptive text
-- Do not include industry or service descriptions
+1. Provide 2-3 complete business names
+2. Include appropriate legal suffix
+3. Consider industry standards
+4. Explain reasoning for each
+5. Assign confidence scores
+6. Suggest relevant industry
 
-Example Input: "PS Adv"
-Example Output: "PS Advisory LLC"`;
+Format response as JSON:
+{
+  "suggestions": [
+    {
+      "name": "string",
+      "confidence": number,
+      "industry": "string",
+      "reasoning": "string"
+    }
+  ]
+}
+
+Example:
+Input: "tech solutions"
+{
+  "suggestions": [
+    {
+      "name": "TechSolutions Pro LLC",
+      "confidence": 0.9,
+      "industry": "Technology Services",
+      "reasoning": "Professional technology services company name with modern suffix"
+    }
+  ]
+}`;
 
     const completion = await openai.chat.completions.create({
       messages: [{ role: "user", content: prompt }],
       model: "gpt-4-turbo-preview",
-      temperature: 0.1,
-      max_tokens: 50
+      temperature: 0.7,
+      response_format: { type: "json_object" }
     });
 
-    const suggestions = completion.choices[0].message.content
-      ?.split('\n')
-      .filter(name => name.trim().length > 0)
-      .filter(name => validateBusinessName(name).isValid)
-      .map(name => ({
-        name: name.trim(),
-        confidence: 0.6,
-        reason: 'AI-generated suggestion'
-      })) || [];
-
-    // Only return the first valid suggestion
-    return suggestions.slice(0, 1);
+    const response = JSON.parse(completion.choices[0].message.content || '{}');
+    
+    return (response.suggestions || []).map((suggestion: any) => ({
+      ...suggestion,
+      source: 'AI'
+    }));
   } catch (error) {
-    console.error('Error suggesting business name:', error);
-    return [];
+    const aiError = handleAIError(error);
+    console.error('Business name suggestion error:', aiError);
+    return [{
+      name: partialName,
+      confidence: 0.5,
+      source: 'Fallback',
+      reasoning: aiError.message
+    }];
   }
 }
 
