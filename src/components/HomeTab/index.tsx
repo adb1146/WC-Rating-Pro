@@ -32,9 +32,12 @@ export function HomeTab({ savedRatings, onNewRating }: HomeTabProps) {
   };
 
   const handleQuoteGenerated = () => {
-    // Refresh both quotes and ratings
-    getQuotes().then(setQuotes).catch(console.error);
-    getRatings().then(setSavedRatings).catch(console.error);
+    // Refresh data and switch to quotes tab
+    Promise.all([
+      getQuotes().then(setQuotes),
+      getRatings().then(setSavedRatings)
+    ]).catch(console.error);
+    
     setActiveSection('quotes');
   };
 

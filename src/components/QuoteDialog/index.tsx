@@ -32,25 +32,25 @@ export function QuoteDialog({ rating, isOpen, onClose, onQuoteGenerated }: Quote
   const handleGenerateQuote = async () => {
     if (!rating) return;
     
-    const newQuote: Quote = {
-      id: Date.now().toString(),
-      ratingId: rating.id,
-      quoteNumber: generateQuoteNumber(),
-      businessInfo: rating.businessInfo,
-      premium: rating.totalPremium,
-      effectiveDate,
-      expirationDate: format(addYears(new Date(effectiveDate), 1), 'yyyy-MM-dd'),
-      status: 'draft',
-      createdAt: new Date().toISOString(),
-      notes
-    };
-
     try {
+      // Update application status first
+      await updateApplicationStatus(rating.id, 'quoted');
+
+      const newQuote: Quote = {
+        id: Date.now().toString(),
+        ratingId: rating.id,
+        quoteNumber: generateQuoteNumber(),
+        businessInfo: rating.businessInfo,
+        premium: rating.totalPremium,
+        effectiveDate,
+        expirationDate: format(addYears(new Date(effectiveDate), 1), 'yyyy-MM-dd'),
+        status: 'draft',
+        createdAt: new Date().toISOString(),
+        notes
+      };
+
       await saveQuote(newQuote);
       setQuote(newQuote);
-      
-      // Update application status to quoted
-      await updateApplicationStatus(rating.id, 'quoted');
       
       // Notify parent components
       onQuoteGenerated?.();
